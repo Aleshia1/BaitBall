@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Fish {
 
@@ -12,6 +11,9 @@ public class Fish {
 	float distanceToDolphin;
 	float distanceOfLastMovement;
 	public float myIndex;
+
+	public float directionFactor = 10;
+	public float positionFactor = 10;
 
 	// Use this for initialization
 
@@ -34,34 +36,58 @@ public class Fish {
 		}
 
 
-		// look where you're going
-		if (distanceOfLastMovement > 0.1) {
-			// reorient yourself
-			myGameObject.transform.LookAt(myGameObject.transform.position + directionOfMovement);
-			myGameObject.transform.Rotate(-90, 0, 0);
+	
 
-		}
-
-		previousPosition = myGameObject.transform.position;
-
-
-		// move closer to neighbors
-		Collider[] hitColliders = Physics.OverlapSphere(myGameObject.transform.position, 1);
+		// move closer to neighbors and go in the same direction
+		Collider[] hitColliders = Physics.OverlapSphere(myGameObject.transform.position, 3);
 		Vector3 averagePositionOfNeighbors = myGameObject.transform.position;
 		Vector3 averageDirectionOfNeighbors = directionOfMovement;
 		for (int i=0; i<hitColliders.Length; i++) {
 			averagePositionOfNeighbors += hitColliders[i].rigidbody.transform.position;
-			directionOfMovement += hitColliders[i].rigidbody.transform.forward;
+			averageDirectionOfNeighbors += hitColliders[i].rigidbody.transform.forward;
 		}
 		if (hitColliders.Length > 0) {
 			averagePositionOfNeighbors.x /= (hitColliders.Length+1);
 			averagePositionOfNeighbors.y /= (hitColliders.Length+1);
 			averagePositionOfNeighbors.z /= (hitColliders.Length+1);
 
-			directionOfMovement.x /= (hitColliders.Length+1);
-			directionOfMovement.y /= (hitColliders.Length+1);
-			directionOfMovement.z /= (hitColliders.Length+1);
+			averageDirectionOfNeighbors.x /= (hitColliders.Length+1);
+			averageDirectionOfNeighbors.y /= (hitColliders.Length+1);
+			averageDirectionOfNeighbors.z /= (hitColliders.Length+1);
+
 		}
+
+		averageDirectionOfNeighbors = Vector3.Normalize( averageDirectionOfNeighbors );
+
+		myGameObject.transform.rigidbody.AddForce(
+
+			positionFactor * 
+
+			(averagePositionOfNeighbors - myGameObject.transform.position)
+
+			+
+
+			directionFactor *
+			
+			averageDirectionOfNeighbors
+
+			);
+
+
+
+
+
+
+		// look where you're going
+		if (distanceOfLastMovement > 0.1) {
+			// reorient yourself
+			myGameObject.transform.LookAt(myGameObject.transform.position + averageDirectionOfNeighbors);
+//			myGameObject.transform.Rotate(-90, 0, 0);
+			
+		}
+		
+		previousPosition = myGameObject.transform.position;
+
 
 //		Debug.Log ("average position is " + averagePositionOfNeighbors + " and direction: " + averageDirectionOfNeighbors);
 

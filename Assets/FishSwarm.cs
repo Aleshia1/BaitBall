@@ -17,7 +17,7 @@ public class FishSwarm : MonoBehaviour {
 			if (newFish == null) {
 				Debug.Log("null");
 			}
-			newFish.myGameObject.transform.position = Random.insideUnitSphere * 2;
+			newFish.myGameObject.transform.position = Random.insideUnitSphere * 20;
 			newFish.myGameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Dolphin").transform.position);
 //			newFish.myGameObject.tag = System.Convert.ToString(i);
 
@@ -40,7 +40,7 @@ public class FishSwarm : MonoBehaviour {
 
 		for (int i=0; i<numberInSwarm; i++) {
 
-			Debug.Log("i= " + i);
+//			Debug.Log("i= " + i);
 			((Fish)fishSwarm[i]).Update();
 
 		}
