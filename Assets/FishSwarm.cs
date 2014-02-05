@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FishSwarm : MonoBehaviour {
 
-	public static int numberInSwarm = 400;
+	public static int numberInSwarm = 250;
 	static ArrayList fishSwarm = new ArrayList(numberInSwarm);
 	Fish newFish;
 
@@ -17,11 +17,12 @@ public class FishSwarm : MonoBehaviour {
 			if (newFish == null) {
 				Debug.Log("null");
 			}
-			newFish.myGameObject.transform.position = Random.insideUnitSphere * 20;
-			newFish.myGameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Dolphin").transform.position);
-//			newFish.myGameObject.tag = System.Convert.ToString(i);
+			newFish.myGameObject.transform.position = Random.insideUnitSphere * 5;
+//			newFish.myGameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Dolphin").transform.position);
 
 			fishSwarm.Add(newFish);
+
+		
 
 			newFish.Update();
 		}
@@ -31,12 +32,10 @@ public class FishSwarm : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (fishSwarm == null) {
+		if (fishSwarm == null || numberInSwarm < 1) {
 			Debug.Log ("swarm is null");
 			return;
 		}
-
-		Vector3 averageDirection;
 
 		for (int i=0; i<numberInSwarm; i++) {
 

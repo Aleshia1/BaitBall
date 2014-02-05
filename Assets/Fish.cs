@@ -12,8 +12,9 @@ public class Fish {
 	float distanceOfLastMovement;
 	public float myIndex;
 
-	public float directionFactor = 10;
-	public float positionFactor = 10;
+	float directionFactor = .3f;
+	float positionFactor = 3f;
+	float neighborhoodSize = 2f;
 
 	// Use this for initialization
 
@@ -21,12 +22,19 @@ public class Fish {
 	public void Update () {
 
 		// find directions and distances
-		directionOfMovement = Vector3.Normalize(myGameObject.transform.position - previousPosition);
-		distanceOfLastMovement = Vector3.Distance(myGameObject.transform.position, previousPosition);
+		directionOfMovement = Vector3.Normalize(myGameObject.transform.rigidbody.velocity);
+		distanceOfLastMovement = Vector3.Distance(myGameObject.transform.position, 
+		                                          previousPosition);
 
-		distanceToDolphin = Vector3.Distance(dolphin.transform.position, myGameObject.transform.position);
+		distanceToDolphin = Vector3.Distance(dolphin.transform.position, 
+		                                     myGameObject.transform.position);
 		directionDolphinToFish = Vector3.Normalize( 
-		                                           myGameObject.transform.position - dolphin.transform.position);
+		            myGameObject.transform.position - dolphin.transform.position);
+
+		if (myIndex == 1) {
+//			Debug.Log ("dir: " + directionOfMovement);
+		}
+
 
 		// Get away from dolphin
 		if (distanceToDolphin < 3) {
@@ -39,7 +47,8 @@ public class Fish {
 	
 
 		// move closer to neighbors and go in the same direction
-		Collider[] hitColliders = Physics.OverlapSphere(myGameObject.transform.position, 3);
+		Collider[] hitColliders = Physics.OverlapSphere(myGameObject.transform.position, 
+		                                                neighborhoodSize);
 		Vector3 averagePositionOfNeighbors = myGameObject.transform.position;
 		Vector3 averageDirectionOfNeighbors = directionOfMovement;
 		for (int i=0; i<hitColliders.Length; i++) {
@@ -57,7 +66,8 @@ public class Fish {
 
 		}
 
-		averageDirectionOfNeighbors = Vector3.Normalize( averageDirectionOfNeighbors );
+		averageDirectionOfNeighbors = Vector3.Normalize( 
+		                                           averageDirectionOfNeighbors );
 
 		myGameObject.transform.rigidbody.AddForce(
 
@@ -79,13 +89,17 @@ public class Fish {
 
 
 		// look where you're going
-		if (distanceOfLastMovement > 0.1) {
-			// reorient yourself
-			myGameObject.transform.LookAt(myGameObject.transform.position + averageDirectionOfNeighbors);
-//			myGameObject.transform.Rotate(-90, 0, 0);
-			
+		if (myIndex == 1) {
+//			Debug.Log ("dist: " + distanceOfLastMovement);
 		}
-		
+
+
+//		myGameObject.transform.LookAt(
+//				Vector3.Cross (myGameObject.transform.position, 
+//		               averageDirectionOfNeighbors)
+//			);
+
+
 		previousPosition = myGameObject.transform.position;
 
 
@@ -104,6 +118,11 @@ public class Fish {
 		previousPosition = myGameObject.transform.position;
 
 		dolphin = GameObject.FindGameObjectWithTag("Dolphin");
+
+		myGameObject.transform.rigidbody.velocity 
+			= 1 * Random.insideUnitSphere;
+		myGameObject.transform.rotation = Quaternion.identity;
+
 	}
 
 
