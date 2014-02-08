@@ -3,26 +3,27 @@ using System.Collections;
 
 public class FishSwarm : MonoBehaviour {
 
-	public static int numberInSwarm = 250;
+	public static int numberInSwarm = 120;
 	static ArrayList fishSwarm = new ArrayList(numberInSwarm);
+	static ArrayList toBeRemoved = new ArrayList();
 	Fish newFish;
+
+	int randomUpdateFish;
+	float randomUpdateFishFloat;
 
 	// Use this for initialization
 	void Start () {
 
 		for (int i=0; i<numberInSwarm; i++) {
-			Debug.Log("i = " + i);
+//			Debug.Log("i = " + i);
 			newFish = new Fish(i);
 
 			if (newFish == null) {
-				Debug.Log("null");
+				Debug.Log("newfish null");
 			}
-			newFish.myGameObject.transform.position = Random.insideUnitSphere * 5;
-//			newFish.myGameObject.transform.LookAt(GameObject.FindGameObjectWithTag("Dolphin").transform.position);
+			newFish.myGameObject.transform.position = Random.insideUnitSphere * 8;
 
 			fishSwarm.Add(newFish);
-
-		
 
 			newFish.Update();
 		}
@@ -32,16 +33,21 @@ public class FishSwarm : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		toBeRemoved.Clear();
+
 		if (fishSwarm == null || numberInSwarm < 1) {
+			Start ();
 			Debug.Log ("swarm is null");
 			return;
 		}
-
 		for (int i=0; i<numberInSwarm; i++) {
 
-//			Debug.Log("i= " + i);
-			((Fish)fishSwarm[i]).Update();
+			Fish f = (Fish) fishSwarm[ i ];
+			f.Update();
 
+			if (f.myGameObject.transform.position.magnitude > 100) {
+				f.myGameObject.transform.position = Vector3.zero;
+			}
 		}
 
 	}

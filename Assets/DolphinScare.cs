@@ -1,28 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DolphinScare : MonoBehaviour {
 
+	GameObject dolphin;
+
 	// Use this for initialization
 	void Start () {
-	
+		dolphin = GameObject.FindGameObjectWithTag("Dolphin");
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		transform.position = GameObject.
-			FindGameObjectWithTag("Dolphin").transform.position;
+	void LateUpdate () {
+		transform.position = dolphin.transform.position;
+		transform.rotation = dolphin.transform.rotation;
 	}
 
-	void OnTriggerStay(Collider fish) {
-
-		fish.rigidbody.AddForce( 3 * 
-		                        Vector3.Normalize(
-
-			fish.transform.position - transform.position
-			)
-
-		                        );
-
-	}
 }

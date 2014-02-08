@@ -7,14 +7,12 @@ public class Fish {
 	public float distanceForceMultiplier;
 	Vector3 previousPosition;
 	public Vector3 directionOfMovement;
-	Vector3 directionDolphinToFish;
 	float distanceToDolphin;
-	float distanceOfLastMovement;
 	public float myIndex;
 
-	float directionFactor = .3f;
-	float positionFactor = 3f;
-	float neighborhoodSize = 2f;
+	float directionFactor = 1f;
+	float positionFactor = 1f;
+	float neighborhoodSize = 4f;
 
 	// Use this for initialization
 
@@ -23,46 +21,34 @@ public class Fish {
 
 		// find directions and distances
 		directionOfMovement = Vector3.Normalize(myGameObject.transform.rigidbody.velocity);
-		distanceOfLastMovement = Vector3.Distance(myGameObject.transform.position, 
-		                                          previousPosition);
 
-		distanceToDolphin = Vector3.Distance(dolphin.transform.position, 
-		                                     myGameObject.transform.position);
-		directionDolphinToFish = Vector3.Normalize( 
-		            myGameObject.transform.position - dolphin.transform.position);
-
-		if (myIndex == 1) {
-//			Debug.Log ("dir: " + directionOfMovement);
-		}
-
-
-		// Get away from dolphin
-		if (distanceToDolphin < 3) {
-			myGameObject.rigidbody.AddForce(
-				distanceForceMultiplier * directionDolphinToFish
-				);
-		}
-
-
-	
+		myGameObject.rigidbody.transform.LookAt( myGameObject.transform.position + directionOfMovement );
 
 		// move closer to neighbors and go in the same direction
 		Collider[] hitColliders = Physics.OverlapSphere(myGameObject.transform.position, 
 		                                                neighborhoodSize);
 		Vector3 averagePositionOfNeighbors = myGameObject.transform.position;
 		Vector3 averageDirectionOfNeighbors = directionOfMovement;
+		int numberOfCollidingFish = 0;
 		for (int i=0; i<hitColliders.Length; i++) {
-			averagePositionOfNeighbors += hitColliders[i].rigidbody.transform.position;
-			averageDirectionOfNeighbors += hitColliders[i].rigidbody.transform.forward;
+			if (hitColliders[i].tag == "Island") {
+				myGameObject.rigidbody.AddForce(Vector3.up);
+				continue;
+			}
+			if (hitColliders[i].tag == "Fish") {
+				averagePositionOfNeighbors += hitColliders[i].attachedRigidbody.transform.position;
+				averageDirectionOfNeighbors += hitColliders[i].attachedRigidbody.transform.forward;
+				++numberOfCollidingFish;
+			}
 		}
-		if (hitColliders.Length > 0) {
-			averagePositionOfNeighbors.x /= (hitColliders.Length+1);
-			averagePositionOfNeighbors.y /= (hitColliders.Length+1);
-			averagePositionOfNeighbors.z /= (hitColliders.Length+1);
+		if (numberOfCollidingFish > 0) {
+			averagePositionOfNeighbors.x /= (numberOfCollidingFish+1);
+			averagePositionOfNeighbors.y /= (numberOfCollidingFish+1);
+			averagePositionOfNeighbors.z /= (numberOfCollidingFish+1);
 
-			averageDirectionOfNeighbors.x /= (hitColliders.Length+1);
-			averageDirectionOfNeighbors.y /= (hitColliders.Length+1);
-			averageDirectionOfNeighbors.z /= (hitColliders.Length+1);
+			averageDirectionOfNeighbors.x /= (numberOfCollidingFish+1);
+			averageDirectionOfNeighbors.y /= (numberOfCollidingFish+1);
+			averageDirectionOfNeighbors.z /= (numberOfCollidingFish+1);
 
 		}
 
@@ -70,27 +56,23 @@ public class Fish {
 		                                           averageDirectionOfNeighbors );
 
 		myGameObject.transform.rigidbody.AddForce(
-
 			positionFactor * 
-
 			(averagePositionOfNeighbors - myGameObject.transform.position)
-
 			+
-
 			directionFactor *
-			
 			averageDirectionOfNeighbors
-
 			);
 
 
-
-
-
-
-		// look where you're going
-		if (myIndex == 1) {
-//			Debug.Log ("dist: " + distanceOfLastMovement);
+		// Don't move above water level
+		if (myGameObject.transform.position.y >
+		     GameObject.FindGameObjectWithTag("Water").transform.position.y) {
+			myGameObject.transform.position = 
+				new Vector3 (
+					myGameObject.transform.position.x,
+					GameObject.FindGameObjectWithTag("Water").transform.position.y,
+					myGameObject.transform.position.z
+					);
 		}
 
 
@@ -103,11 +85,6 @@ public class Fish {
 		previousPosition = myGameObject.transform.position;
 
 
-//		Debug.Log ("average position is " + averagePositionOfNeighbors + " and direction: " + averageDirectionOfNeighbors);
-
-		// move in same direction as neighbors
-
-		
 	}
 
 	public Fish(int i) {
@@ -121,10 +98,8 @@ public class Fish {
 
 		myGameObject.transform.rigidbody.velocity 
 			= 1 * Random.insideUnitSphere;
-		myGameObject.transform.rotation = Quaternion.identity;
+//		myGameObject.transform.rotation = Quaternion.identity;
 
 	}
-
-
-
+	
 }
