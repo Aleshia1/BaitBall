@@ -34,7 +34,11 @@ public class SharkScare : MonoBehaviour {
 			shark.rigidbody.AddForce(
 				7000f * Vector3.Normalize(other.transform.position - shark.rigidbody.position)
 				);
-		}			
+		}
+
+		shark.rigidbody.transform.LookAt( transform.position - 
+		                           Vector3.Normalize(shark.transform.rigidbody.velocity)
+		                           );
 		
 		
 	}

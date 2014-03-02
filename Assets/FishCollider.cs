@@ -3,6 +3,14 @@ using System.Collections;
 
 public class FishCollider : MonoBehaviour {
 
+	void OnTriggerEnter(Collider other) {
+
+		if (other.tag == "Dolphin") {
+			rigidbody.position = 10 * Random.insideUnitSphere;
+			Score.score += 1;
+		}	
+	}
+
 	void OnTriggerStay(Collider other) {
 		if (other.tag == "Fish") {
 			rigidbody.AddForce(
@@ -21,11 +29,9 @@ public class FishCollider : MonoBehaviour {
 			     10 * Vector3.Normalize(
 				rigidbody.position - other.transform.position
 				) );
-		}			
+		}
 
-		if (other.tag == "Dolphin") {
-			rigidbody.position = Vector3.zero;
-		}			
+				
 
 	
 	}

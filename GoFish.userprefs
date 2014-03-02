@@ -1,14 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Fish.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/NGUI/Scripts/Interaction/UIButtonColor.cs">
     <Files>
-      <File FileName="Assets/DolphinScare.cs" Line="15" Column="51" />
-      <File FileName="Assets/Dolphin.cs" Line="66" Column="3" />
-      <File FileName="Assets/FishSwarm.cs" Line="6" Column="38" />
-      <File FileName="Assets/Fish.cs" Line="38" Column="37" />
-      <File FileName="Assets/FishCollider.cs" Line="19" Column="63" />
-      <File FileName="Assets/SharkScare.cs" Line="30" Column="31" />
-      <File FileName="Assets/Shark.cs" Line="16" Column="77" />
+      <File FileName="../VectorFields/Assets/VectorBehavior.cs" Line="1" Column="1" />
+      <File FileName="Assets/Score.cs" Line="1" Column="1" />
+      <File FileName="Assets/Dolphin.cs" Line="1" Column="1" />
+      <File FileName="Assets/FishCollider.cs" Line="1" Column="1" />
+      <File FileName="Assets/FishSwarm.cs" Line="1" Column="1" />
+      <File FileName="Assets/Fish.cs" Line="1" Column="1" />
+      <File FileName="Assets/NGUI/Scripts/UI/UIRoot.cs" Line="1" Column="1" />
+      <File FileName="Assets/NGUI/Scripts/Interaction/UIButtonColor.cs" Line="84" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

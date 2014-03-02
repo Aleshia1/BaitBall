@@ -10,6 +10,8 @@ public class Fish {
 	float distanceToDolphin;
 	public float myIndex;
 
+	Animator animator;
+
 	float directionFactor = 1f;
 	float positionFactor = 1f;
 	float neighborhoodSize = 4f;
@@ -18,6 +20,8 @@ public class Fish {
 
 	// Update is called once per frame
 	public void Update () {
+
+		animator.SetFloat("Speed", 3);
 
 		// find directions and distances
 		directionOfMovement = Vector3.Normalize(myGameObject.transform.rigidbody.velocity);
@@ -75,15 +79,12 @@ public class Fish {
 					);
 		}
 
-
 //		myGameObject.transform.LookAt(
 //				Vector3.Cross (myGameObject.transform.position, 
 //		               averageDirectionOfNeighbors)
 //			);
 
-
 		previousPosition = myGameObject.transform.position;
-
 
 	}
 
@@ -99,6 +100,8 @@ public class Fish {
 		myGameObject.transform.rigidbody.velocity 
 			= 1 * Random.insideUnitSphere;
 //		myGameObject.transform.rotation = Quaternion.identity;
+
+		animator = (Animator) myGameObject.GetComponent("Animator");
 
 	}
 	

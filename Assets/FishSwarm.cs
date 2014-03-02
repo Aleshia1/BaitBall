@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FishSwarm : MonoBehaviour {
 
-	public static int numberInSwarm = 120;
+	public static int numberInSwarm = 220;
 	static ArrayList fishSwarm = new ArrayList(numberInSwarm);
 	static ArrayList toBeRemoved = new ArrayList();
 	Fish newFish;
@@ -21,7 +21,7 @@ public class FishSwarm : MonoBehaviour {
 			if (newFish == null) {
 				Debug.Log("newfish null");
 			}
-			newFish.myGameObject.transform.position = Random.insideUnitSphere * 8;
+			newFish.myGameObject.transform.position = Random.insideUnitSphere * 20;
 
 			fishSwarm.Add(newFish);
 

@@ -15,14 +15,27 @@ public class Shark : MonoBehaviour {
 
 		if (Vector3.Distance( dolphin.transform.position, transform.position ) > 10) {
 
-		rigidbody.AddForce(
-			7000 * Vector3.Normalize(dolphin.transform.position - transform.position)
-		);	
+			rigidbody.AddForce(
+				7000 * Vector3.Normalize(dolphin.transform.position - transform.position)
+			);	
 
-		rigidbody.transform.LookAt( transform.position - 
-		                           		Vector3.Normalize(transform.rigidbody.velocity)
-		                           );
+			rigidbody.transform.LookAt( transform.position - 
+			                           		Vector3.Normalize(transform.rigidbody.velocity)
+			                           );
 		}
+
+	}
+
+	void OnTriggerStay(Collider other) {
+
+		if (other.tag == "Dolphin") {
+			rigidbody.AddForce(
+				7000f * Vector3.Normalize(other.transform.position - rigidbody.position)
+				);
+			Dolphin.blood.SetActive(true);
+
+		}
+		
 	}
 
 }
